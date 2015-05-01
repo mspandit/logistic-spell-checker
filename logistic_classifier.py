@@ -89,7 +89,7 @@ class LogisticClassifier(object):
         for example in zip(inputs, requireds):
             x = numpy.array(example[0])
             y = numpy.array(example[1])
-            d = (self.output_activation(x) - numpy.array(y))
+            d = (self.output_activation(x) - y)
             delta += numpy.append(
                 numpy.zeros((self.weights.shape[0], 1)), 
                 x.T.dot(d).T, 
@@ -100,11 +100,4 @@ class LogisticClassifier(object):
 
     def train(self, inputs, requireds):
         """docstring for train"""
-        
-        delta = self.cost_gradient(inputs, requireds)
-        
-        for out_index in xrange(self.weights.shape[0]):
-            for in_index in xrange(self.weights.shape[1]):
-                self.weights[out_index, in_index] -= (
-                    self.learning_rate
-                    * delta[out_index, in_index])
+        self.weights -= self.learning_rate * self.cost_gradient(inputs, requireds)

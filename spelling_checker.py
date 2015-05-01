@@ -41,7 +41,8 @@ class SpellingChecker(object):
         self.training_set = training_set
         self.average_word_length = int(training_set.words_length / training_set.word_count)
         self.classifier = LogisticClassifier(CHAR_COUNT * self.average_word_length, len(self.training_set.word2count.keys()))
-        for word in self.training_set.word2count.keys()[0:10]:
+        for word in self.training_set.word2count.keys()[0:100]:
+            print "Training on %s %d times." % (word, self.training_set.word2count[word])
             for temp in xrange(self.training_set.word2count[word]):
                 self.classifier.train([[self.word2input(word)]], [[self.word2output(word)]])
 
