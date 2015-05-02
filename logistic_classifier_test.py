@@ -6,12 +6,12 @@ class LogisticClassifierTest(unittest.TestCase):
 
     def test_instantiation(self):
         """docstring for test_instantiation"""
-        nn = LogisticClassifier(5, 4)
+        lc = LogisticClassifier(5, 4)
 
     def test_cost_calculation(self):
         """docstring for test_cost_calculation"""
-        nn = LogisticClassifier(5, 4)
-        output = nn.output_activation([0, 1, 0, 1, 0])
+        lc = LogisticClassifier(5, 4)
+        output = lc.output_activation([0, 1, 0, 1, 0])
         self.assertEqual(output.shape[0], 1)
         self.assertEqual(output.shape[1], 4)
 
@@ -23,10 +23,10 @@ class LogisticClassifierTest(unittest.TestCase):
 
     def test_train(self):
         """docstring for test_backpropagation"""
-        nn = LogisticClassifier(5, 4)
+        lc = LogisticClassifier(5, 4)
         for i in xrange(100):
-            nn.train([[[0, 1, 0, 1, 0]]], [[1, 0, 1, 0]])
-        activation = nn.output_activation([0, 1, 0, 1, 0])
+            lc.train([[[0, 1, 0, 1, 0]]], [[1, 0, 1, 0]])
+        activation = lc.output_activation([0, 1, 0, 1, 0])
         self.assertTrue(activation[0][0] > 0.990)
         self.assertTrue(activation[0][1] < 0.01)
         self.assertTrue(activation[0][2] > 0.990)
