@@ -1,8 +1,8 @@
 from spelling_checker import SpellingChecker, TrainingSet
 
 ts = TrainingSet()
-# ts.set_file('big.txt')
-ts.set_string('peas porridge hot peas porridge cold peas porridge in the pot nine days old')
+ts.set_file('big.txt')
+# ts.set_string('peas porridge hot peas porridge cold peas porridge in the pot nine days old')
 sc = SpellingChecker(ts)
 
 # Excerpted from http://norvig.com/spell.py
@@ -20,8 +20,8 @@ def spelltest(tests, bias=None, verbose=False):
                 bad += 1
                 unknown += (target not in ts.word2count)
                 if verbose:
-                    print 'correct(%r) => %r (%d); expected %r (%d)' % (
-                        wrong, w, NWORDS[w], target, NWORDS[target])
+                    print 'correct(%r) => %r; expected %r' % (
+                        wrong, w, target)
     return dict(bad=bad, n=n, bias=bias, pct=int(100. - 100.*bad/n), 
                 unknown=unknown, secs=int(time.clock()-start) )
 
@@ -217,4 +217,4 @@ tests2 = {'forbidden': 'forbiden', 'decisions': 'deciscions descisions',
 'together': 'togehter', 'profits': 'proffits'}
 
 if __name__ == '__main__':
-    print spelltest(tests1)
+    print spelltest(tests1, None, True)
