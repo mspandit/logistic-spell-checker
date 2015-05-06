@@ -1,9 +1,17 @@
 from spelling_checker import SpellingChecker, TrainingSet
 
-ts = TrainingSet()
-ts.set_file('big.txt')
-# ts.set_string('peas porridge hot peas porridge cold peas porridge in the pot nine days old')
-sc = SpellingChecker(ts)
+sc = SpellingChecker()
+if (False):
+    sc.load_parameters('parameters.txt')
+    ts = sc.training_set
+else:
+    ts = TrainingSet()
+    if (True):
+        ts.set_file('big.txt')
+    else:
+        ts.set_string('access accommodation address aunt awful benefit bicycle biscuits career')
+    sc.set_training_set(ts)
+    sc.save_parameters('parameters.txt')
 
 # Excerpted from http://norvig.com/spell.py
 

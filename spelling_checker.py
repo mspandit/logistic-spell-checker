@@ -1,11 +1,17 @@
 import re, collections
+import pickle
+
 import numpy
 from sklearn.linear_model import LogisticRegression
+
+def dd():
+    """docstring for dd"""
+    return 1
 
 def words(text): return re.findall('[a-z]+', text.lower())
 
 def count_words(features):
-    model = collections.defaultdict(lambda: 1)
+    model = collections.defaultdict(dd)
     word_count = 0
     words_length = 0
     max_word_length = 0
@@ -39,14 +45,9 @@ class TrainingSet(object):
 
 class SpellingChecker(object):
     """docstring for SpellingChecker"""    
-    def __init__(self, training_set):
+    def __init__(self):
         super(SpellingChecker, self).__init__()
-        self.training_set = training_set
-        self.average_word_length = int(training_set.words_length / training_set.word_count)
         self.classifier = LogisticRegression()
-        training_inputs = [self.word2input(word) for word in self.training_set.word2count.keys()]
-        training_outputs = [self.training_set.word2count.keys().index(word) for word in self.training_set.word2count.keys()]
-        self.classifier.fit(training_inputs, training_outputs)
 
     def word2input(self, word):
         """docstring for word2input"""
@@ -65,3 +66,24 @@ class SpellingChecker(object):
         """docstring for check"""
         result = self.classifier.predict(self.word2input(word))
         return self.training_set.word2count.keys()[result]
+
+    def set_training_set(self, training_set):
+        """docstring for set_training_set"""
+        self.training_set = training_set
+        self.average_word_length = int(training_set.words_length / training_set.word_count)
+        training_inputs = [self.word2input(word) for word in self.training_set.word2count.keys() for i in xrange(self.training_set.word2count[word])]
+        training_outputs = [self.training_set.word2count.keys().index(word) for word in self.training_set.word2count.keys() for i in xrange(self.training_set.word2count[word])]
+        self.classifier.fit(training_inputs, training_outputs)
+
+    def save_parameters(self, filename):
+        """docstring for save_parameters"""
+        f = open(filename, 'w')
+        f.write(pickle.dumps(self.training_set))
+        f.write("*****")
+        f.write(pickle.dumps(self.classifier))
+        
+    def load_parameters(self, filename):
+        """docstring for load_parameters"""
+        f = file(filename).read()
+        self.training_set = pickle.loads(f.split("*****")[0])
+        self.classifier = pickle.loads(f.split("*****")[1])
